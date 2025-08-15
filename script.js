@@ -101,12 +101,16 @@ class FattureInCloudService {
             
             // Parsing per l'endpoint /user/companies
             let companyId;
-            if (data.data && Array.isArray(data.data) && data.data.length > 0) {
-                // Cerca la company di default o prendi la prima
+            if (data.data && data.data.companies && Array.isArray(data.data.companies) && data.data.companies.length > 0) {
+                // Struttura: data.data.companies[]
+                const defaultCompany = data.data.companies.find(company => company.type === 'company') || data.data.companies[0];
+                companyId = defaultCompany.id;
+            } else if (data.data && Array.isArray(data.data) && data.data.length > 0) {
+                // Struttura: data.data[]
                 const defaultCompany = data.data.find(company => company.type === 'company') || data.data[0];
                 companyId = defaultCompany.id;
             } else if (Array.isArray(data) && data.length > 0) {
-                // Fallback se la risposta è direttamente un array
+                // Struttura: data[]
                 const defaultCompany = data.find(company => company.type === 'company') || data[0];
                 companyId = defaultCompany.id;
             } else {
