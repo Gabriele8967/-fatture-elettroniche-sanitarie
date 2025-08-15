@@ -15,7 +15,8 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  SECRETS_SCAN_OMIT_PATHS = "fattureincloud-js-sdk-master/**,oauth-test-simple.html"
+  SECRETS_SCAN_OMIT_PATHS = "fattureincloud-js-sdk-master/**,oauth-test-simple.html,netlify/functions/**"
+  SECRETS_SCAN_OMIT_KEYS = "FATTURE_TOKEN_URL,FATTURE_API_BASE_URL"
 
 # Headers per sicurezza
 [[headers]]

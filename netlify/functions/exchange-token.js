@@ -42,7 +42,20 @@ exports.handler = async (event, context) => {
         }
 
         // Exchange code for token with FattureInCloud API
-        const tokenUrl = process.env.FATTURE_TOKEN_URL || 'https://api-v2.fattureincloud.it/oauth/token';
+        const tokenUrl = process.env.FATTURE_TOKEN_URL;
+        if (!tokenUrl) {
+            return {
+                statusCode: 500,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    error: 'FATTURE_TOKEN_URL environment variable not configured' 
+                })
+            };
+        }
+
         const tokenResponse = await fetch(tokenUrl, {
             method: 'POST',
             headers: {
