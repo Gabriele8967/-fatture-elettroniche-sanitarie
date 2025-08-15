@@ -216,7 +216,7 @@ class FattureInCloudService {
                 }
             }],
             template: {
-                id: 'default'
+                id: null
             },
             delivery_note: false,
             accompanying_invoice: false,
