@@ -86,7 +86,7 @@ class FattureInCloudService {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    path: '/user/info',
+                    path: '/user/companies',
                     method: 'GET',
                     token: this.accessToken
                 })
@@ -99,18 +99,18 @@ class FattureInCloudService {
             const data = await response.json();
             console.log('API Response received:', JSON.stringify(data, null, 2));
             
-            // Gestisce diverse strutture di risposta
+            // Parsing per l'endpoint /user/companies
             let companyId;
-            if (data.data && data.data.default_company && data.data.default_company.id) {
-                companyId = data.data.default_company.id;
-            } else if (data.data && data.data.companies && data.data.companies.length > 0) {
-                companyId = data.data.companies[0].id;
-            } else if (data.default_company && data.default_company.id) {
-                companyId = data.default_company.id;
-            } else if (data.companies && data.companies.length > 0) {
-                companyId = data.companies[0].id;
+            if (data.data && Array.isArray(data.data) && data.data.length > 0) {
+                // Cerca la company di default o prendi la prima
+                const defaultCompany = data.data.find(company => company.type === 'company') || data.data[0];
+                companyId = defaultCompany.id;
+            } else if (Array.isArray(data) && data.length > 0) {
+                // Fallback se la risposta è direttamente un array
+                const defaultCompany = data.find(company => company.type === 'company') || data[0];
+                companyId = defaultCompany.id;
             } else {
-                throw new Error(`Struttura risposta API non riconosciuta: ${JSON.stringify(data)}`);
+                throw new Error(`Nessuna azienda trovata nella risposta API: ${JSON.stringify(data)}`);
             }
             
             this.companyId = companyId;
