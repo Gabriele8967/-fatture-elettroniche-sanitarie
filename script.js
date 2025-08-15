@@ -99,12 +99,18 @@ class FattureInCloudService {
             const data = await response.json();
             console.log('API Response received:', JSON.stringify(data, null, 2));
             
-            // Parsing per l'endpoint /user/companies
+            // Parsing per l'endpoint /user/companies [DEBUG v2]
             let companyId;
+            console.log('DEBUG: Checking data.data.companies:', data.data && data.data.companies);
+            console.log('DEBUG: Is array:', Array.isArray(data.data && data.data.companies));
+            console.log('DEBUG: Length:', data.data && data.data.companies && data.data.companies.length);
+            
             if (data.data && data.data.companies && Array.isArray(data.data.companies) && data.data.companies.length > 0) {
                 // Struttura: data.data.companies[]
+                console.log('DEBUG: Using data.data.companies structure');
                 const defaultCompany = data.data.companies.find(company => company.type === 'company') || data.data.companies[0];
                 companyId = defaultCompany.id;
+                console.log('DEBUG: Found companyId:', companyId);
             } else if (data.data && Array.isArray(data.data) && data.data.length > 0) {
                 // Struttura: data.data[]
                 const defaultCompany = data.data.find(company => company.type === 'company') || data.data[0];
@@ -154,7 +160,9 @@ class FattureInCloudService {
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(`Errore API: ${error.error?.validation_result || response.statusText}`);
+                console.error('API Error Response:', JSON.stringify(error, null, 2));
+                console.error('Request data was:', JSON.stringify({ data: invoice }, null, 2));
+                throw new Error(`Errore API (${response.status}): ${JSON.stringify(error)}`);
             }
 
             const result = await response.json();
