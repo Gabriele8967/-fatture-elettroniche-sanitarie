@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Autenticazione - Debug</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 2rem; 
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .debug {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test Autenticazione API</h1>
+        <p>Questa pagina serve per testare l'autenticazione senza il controllo dello stato OAuth2.</p>
+        
+        <button class="btn" onclick="testAuth()">🔑 Test Autenticazione</button>
+        <button class="btn" onclick="clearStorage()">🗑️ Pulisci Storage</button>
+        
+        <div id="debug" class="debug">
+Informazioni debug appariranno qui...
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        function log(message) {
+            const debugDiv = document.getElementById('debug');
+            debugDiv.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+        }
+
+        function testAuth() {
+            log('Avvio test autenticazione...');
+            
+            const state = generateRandomState();
+            log('State generato: ' + state);
+            
+            // Salva lo stato
+            saveState(state);
+            log('State salvato in storage');
+            
+            // Costruisci URL di test che va direttamente al callback
+            const params = new URLSearchParams({
+                response_type: 'code',
+                client_id: FATTURE_IN_CLOUD_CONFIG.CLIENT_ID,
+                redirect_uri: window.location.origin + '/auth-callback.html',
+                scope: FATTURE_IN_CLOUD_CONFIG.SCOPES,
+                state: state
+            });
+            
+            const authUrl = `${FATTURE_IN_CLOUD_CONFIG.AUTH_URL}?${params.toString()}`;
+            log('URL auth: ' + authUrl);
+            
+            // Apri popup
+            const popup = window.open(authUrl, 'auth', 'width=600,height=700');
+            
+            // Ascolta messaggi
+            window.addEventListener('message', function(event) {
+                if (event.data.type === 'auth_success') {
+                    log('Autenticazione riuscita!');
+                    log('Token ricevuto: ' + event.data.access_token.substring(0, 20) + '...');
+                    popup.close();
+                }
+            });
+        }
+
+        function clearStorage() {
+            localStorage.clear();
+            sessionStorage.clear();
+            document.cookie = 'oauth_state=; path=/; max-age=0';
+            log('Storage pulito');
+        }
+
+        // Info iniziali
+        log('Test page caricata');
+        log('Client ID: ' + FATTURE_IN_CLOUD_CONFIG.CLIENT_ID);
+        log('Redirect URI: ' + FATTURE_IN_CLOUD_CONFIG.REDIRECT_URI);
+    </script>
+</body>
+</html>

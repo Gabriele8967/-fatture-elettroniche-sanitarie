@@ -98,12 +98,20 @@
 
             // Verifica stato per sicurezza
             if (!verifyState(state)) {
+                console.error('State verification failed:', {
+                    received: state,
+                    sessionStorage: sessionStorage.getItem('oauth_state'),
+                    localStorage: localStorage.getItem('oauth_state_backup')
+                });
+                
                 statusDiv.innerHTML = `
                     <div class="error">
                         <h3>❌ Errore di Sicurezza</h3>
                         <p>Stato OAuth2 non valido.</p>
+                        <p><small>State ricevuto: ${state}</small></p>
+                        <p><small>Questo errore può verificarsi per motivi di sicurezza. Riprova l'autenticazione.</small></p>
                     </div>
-                    <button onclick="window.close()">Chiudi</button>
+                    <button onclick="window.close()">Chiudi e Riprova</button>
                 `;
                 return;
             }

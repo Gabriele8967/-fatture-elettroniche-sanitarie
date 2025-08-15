@@ -15,7 +15,7 @@ const FATTURE_IN_CLOUD_CONFIG = {
     TOKEN_URL: 'https://api-v2.fattureincloud.it/oauth/token',
     
     // Redirect URI (deve essere configurato su Fatture in Cloud)
-    REDIRECT_URI: window.location.origin + '/auth-callback.html',
+    REDIRECT_URI: 'https://fatture-elettroniche.netlify.app/auth-callback.html',
     
     // Scopes richiesti
     SCOPES: 'entity.clients:r entity.clients:a issued_documents.invoices:r issued_documents.invoices:a',
@@ -42,14 +42,42 @@ function generateRandomState() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 
-// Salva stato per verifica
+// Salva stato per verifica (con fallback localStorage)
 function saveState(state) {
     sessionStorage.setItem('oauth_state', state);
+    localStorage.setItem('oauth_state_backup', state);
+    // Salva anche nel cookie per compatibilità cross-window
+    document.cookie = `oauth_state=${state}; path=/; max-age=300`; // 5 minuti
 }
 
-// Verifica stato OAuth2
+// Verifica stato OAuth2 (con múltiple fallback)
 function verifyState(state) {
-    const savedState = sessionStorage.getItem('oauth_state');
+    // Prova sessionStorage
+    let savedState = sessionStorage.getItem('oauth_state');
+    
+    // Fallback: localStorage
+    if (!savedState) {
+        savedState = localStorage.getItem('oauth_state_backup');
+    }
+    
+    // Fallback: cookie
+    if (!savedState) {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'oauth_state') {
+                savedState = value;
+                break;
+            }
+        }
+    }
+    
+    // Pulisci tutti i salvataggi
     sessionStorage.removeItem('oauth_state');
+    localStorage.removeItem('oauth_state_backup');
+    document.cookie = 'oauth_state=; path=/; max-age=0';
+    
+    console.log('State verification:', { received: state, saved: savedState });
+    
     return savedState === state;
 }

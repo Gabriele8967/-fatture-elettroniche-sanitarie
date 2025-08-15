@@ -29,13 +29,22 @@ class FattureInCloudService {
 
     // Avvia il processo di autenticazione OAuth2
     authenticate() {
-        const authUrl = getAuthorizationUrl();
         const state = generateRandomState();
         saveState(state);
         
+        const params = new URLSearchParams({
+            response_type: 'code',
+            client_id: FATTURE_IN_CLOUD_CONFIG.CLIENT_ID,
+            redirect_uri: FATTURE_IN_CLOUD_CONFIG.REDIRECT_URI,
+            scope: FATTURE_IN_CLOUD_CONFIG.SCOPES,
+            state: state
+        });
+        
+        const authUrl = `${FATTURE_IN_CLOUD_CONFIG.AUTH_URL}?${params.toString()}`;
+        
         // Apre una finestra popup per l'autenticazione
         const popup = window.open(
-            authUrl.replace('state=' + generateRandomState(), 'state=' + state),
+            authUrl,
             'auth',
             'width=600,height=700,scrollbars=yes,resizable=yes'
         );
