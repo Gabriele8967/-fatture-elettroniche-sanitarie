@@ -216,7 +216,7 @@ class FattureInCloudService {
                 }
             }],
             template: {
-                id: null
+                id: 1
             },
             delivery_note: false,
             accompanying_invoice: false,
@@ -228,12 +228,7 @@ class FattureInCloudService {
             other_withholding_tax: 0,
             stamp_duty: 0,
             use_split_payment: false,
-            e_invoice: true,
-            ei_data: {
-                vat_kind: 'I', // Operazione Imponibile
-                transmission_format: 'FPR12',
-                destination_code: formData.patientCF.substring(0, 7).toUpperCase()
-            }
+            e_invoice: false
         };
     }
 
