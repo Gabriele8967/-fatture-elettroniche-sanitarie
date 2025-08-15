@@ -1,13 +1,13 @@
 // ========================================
-// CONFIGURAZIONE API FATTURE IN CLOUD
-// IMPORTANTE: Questo file contiene credenziali sensibili
+// CONFIGURAZIONE API FATTURE IN CLOUD - TEMPLATE
+// IMPORTANTE: Copiare questo file come config.js e inserire le credenziali reali
 // ========================================
 
 const FATTURE_IN_CLOUD_CONFIG = {
-    // Credenziali OAuth2
-    CLIENT_ID: 'R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX',
-    CLIENT_SECRET: 'sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n',
-    APP_ID: '13354',
+    // Credenziali OAuth2 - INSERIRE I VALORI REALI
+    CLIENT_ID: 'YOUR_CLIENT_ID_HERE',
+    CLIENT_SECRET: 'YOUR_CLIENT_SECRET_HERE', 
+    APP_ID: 'YOUR_APP_ID_HERE',
     
     // URL API
     API_BASE_URL: 'https://api-v2.fattureincloud.it',
