@@ -99,18 +99,12 @@ class FattureInCloudService {
             const data = await response.json();
             console.log('API Response received:', JSON.stringify(data, null, 2));
             
-            // Parsing per l'endpoint /user/companies [DEBUG v2]
+            // Parsing per l'endpoint /user/companies
             let companyId;
-            console.log('DEBUG: Checking data.data.companies:', data.data && data.data.companies);
-            console.log('DEBUG: Is array:', Array.isArray(data.data && data.data.companies));
-            console.log('DEBUG: Length:', data.data && data.data.companies && data.data.companies.length);
-            
             if (data.data && data.data.companies && Array.isArray(data.data.companies) && data.data.companies.length > 0) {
                 // Struttura: data.data.companies[]
-                console.log('DEBUG: Using data.data.companies structure');
                 const defaultCompany = data.data.companies.find(company => company.type === 'company') || data.data.companies[0];
                 companyId = defaultCompany.id;
-                console.log('DEBUG: Found companyId:', companyId);
             } else if (data.data && Array.isArray(data.data) && data.data.length > 0) {
                 // Struttura: data.data[]
                 const defaultCompany = data.data.find(company => company.type === 'company') || data.data[0];
@@ -237,7 +231,6 @@ class FattureInCloudService {
             e_invoice: true,
             ei_data: {
                 vat_kind: 'I', // Operazione Imponibile
-                original_document_type: 'invoice',
                 transmission_format: 'FPR12',
                 destination_code: formData.patientCF.substring(0, 7).toUpperCase()
             }
