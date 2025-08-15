@@ -1,0 +1,46 @@
+# fattureInCloudSdk.Client
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**id** | **Number** | Client id | [optional] 
+**code** | **String** | Client code | [optional] 
+**name** | **String** | Client name | [optional] 
+**type** | [**ClientType**](ClientType.md) |  | [optional] 
+**firstName** | **String** | Client first name | [optional] 
+**lastName** | **String** | Client last name | [optional] 
+**contactPerson** | **String** | Client contact person | [optional] 
+**vatNumber** | **String** | Client vat number | [optional] 
+**taxCode** | **String** | Client tax code | [optional] 
+**addressStreet** | **String** | Client address street | [optional] 
+**addressPostalCode** | **String** | Client address postal code | [optional] 
+**addressCity** | **String** | Client address city | [optional] 
+**addressProvince** | **String** | Client address province | [optional] 
+**addressExtra** | **String** | Client address extra info | [optional] 
+**country** | **String** | Client country | [optional] 
+**countryIso** | **String** | Client country iso code | [optional] 
+**email** | **String** | Client email | [optional] 
+**certifiedEmail** | **String** | Client certified email | [optional] 
+**phone** | **String** | Client phone | [optional] 
+**fax** | **String** | Client fax | [optional] 
+**notes** | **String** | Client extra | [optional] 
+**defaultVat** | [**VatType**](VatType.md) |  | [optional] 
+**defaultPaymentTerms** | **Number** | Client default payment terms | [optional] 
+**defaultPaymentTermsType** | [**PaymentTermsType**](PaymentTermsType.md) |  | [optional] 
+**defaultPaymentMethod** | [**PaymentMethod**](PaymentMethod.md) |  | [optional] 
+**bankName** | **String** | Client bank name | [optional] 
+**bankIban** | **String** | Client bank iban | [optional] 
+**bankSwiftCode** | **String** | Client bank swift code | [optional] 
+**shippingAddress** | **String** | Client shipping address | [optional] 
+**eInvoice** | **Boolean** | Use e-invoices for this entity | [optional] 
+**eiCode** | **String** | Client e-invoice code  | [optional] 
+**discountHighlight** | **Boolean** | Highlight Discount | [optional] 
+**defaultDiscount** | **Number** | Client default discount | [optional] 
+**hasIntentDeclaration** | **Boolean** | Client has intent declaration | [optional] 
+**intentDeclarationProtocolNumber** | **String** | Client intent declaration protocol number | [optional] 
+**intentDeclarationProtocolDate** | **Date** | Client intent declaration protocol date | [optional] 
+**createdAt** | **String** | Client creation date | [optional] 
+**updatedAt** | **String** | Client last update date | [optional] 
+
+

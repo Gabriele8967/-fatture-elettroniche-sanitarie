@@ -158,25 +158,24 @@
             }
         }
 
-        // Scambia il codice di autorizzazione con un access token
+        // Scambia il codice di autorizzazione con un access token tramite Netlify function
         async function exchangeCodeForToken(code) {
-            const response = await fetch(FATTURE_IN_CLOUD_CONFIG.TOKEN_URL, {
+            const response = await fetch('/.netlify/functions/exchange-token', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 },
-                body: new URLSearchParams({
-                    grant_type: 'authorization_code',
-                    client_id: FATTURE_IN_CLOUD_CONFIG.CLIENT_ID,
-                    client_secret: FATTURE_IN_CLOUD_CONFIG.CLIENT_SECRET,
-                    redirect_uri: FATTURE_IN_CLOUD_CONFIG.REDIRECT_URI,
-                    code: code
+                body: JSON.stringify({
+                    code: code,
+                    clientId: FATTURE_IN_CLOUD_CONFIG.CLIENT_ID,
+                    clientSecret: FATTURE_IN_CLOUD_CONFIG.CLIENT_SECRET,
+                    redirectUri: FATTURE_IN_CLOUD_CONFIG.REDIRECT_URI
                 })
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
+                const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+                throw new Error(`HTTP ${response.status}: ${errorData.error || 'Server error'}`);
             }
 
             return await response.json();
