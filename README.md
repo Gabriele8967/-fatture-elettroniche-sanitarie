@@ -30,7 +30,7 @@ Sistema web per la generazione automatica di fatture elettroniche per servizi sa
 ### Generazione Fatture
 - Formato XML elettronico valido
 - Numerazione automatica
-- Invio simultaneo a paziente e `centrimanna2@gmail.com`
+- Invio simultaneo a paziente e amministratore
 - Note personalizzabili
 
 ## 🚀 Installazione e Configurazione

@@ -9,19 +9,19 @@ const FATTURE_IN_CLOUD_CONFIG = {
     CLIENT_SECRET: 'YOUR_CLIENT_SECRET_HERE', 
     APP_ID: 'YOUR_APP_ID_HERE',
     
-    // URL API
-    API_BASE_URL: 'https://api-v2.fattureincloud.it',
-    AUTH_URL: 'https://api-v2.fattureincloud.it/oauth/authorize',
-    TOKEN_URL: 'https://api-v2.fattureincloud.it/oauth/token',
+    // URL API (configurare con valori reali)
+    API_BASE_URL: 'your_api_base_url_here',
+    AUTH_URL: 'your_auth_url_here',
+    TOKEN_URL: 'your_token_url_here',
     
     // Redirect URI (deve essere configurato su Fatture in Cloud)
-    REDIRECT_URI: 'https://fatture-elettroniche.netlify.app/auth-callback.html',
+    REDIRECT_URI: 'your_redirect_uri_here',
     
-    // Scopes richiesti
-    SCOPES: 'entity.clients:r entity.clients:a issued_documents.invoices:r issued_documents.invoices:a',
+    // Scopes richiesti (configurare con scopes reali)
+    SCOPES: 'your_scopes_here',
     
-    // Email amministratore
-    ADMIN_EMAIL: 'centrimanna2@gmail.com'
+    // Email amministratore (configurare)
+    ADMIN_EMAIL: 'your_admin_email_here'
 };
 
 // Funzione per ottenere l'URL di autorizzazione

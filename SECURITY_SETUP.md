@@ -14,9 +14,9 @@ cp config-template.js config.js
 ### Step 2: Inserisci le tue credenziali in config.js
 ```javascript
 const FATTURE_IN_CLOUD_CONFIG = {
-    CLIENT_ID: 'R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX',
-    CLIENT_SECRET: 'sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n',
-    APP_ID: '13354',
+    CLIENT_ID: 'your_client_id_here',
+    CLIENT_SECRET: 'your_client_secret_here',
+    APP_ID: 'your_app_id_here',
     // ... resto della configurazione
 };
 ```
@@ -29,9 +29,9 @@ Il file non verrà mai committato per sicurezza.
 ### Opzione 1: Variabili d'ambiente Netlify
 1. Dashboard Netlify → Site settings → Environment variables
 2. Aggiungi:
-   - `FATTURE_CLIENT_ID`: R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX
-   - `FATTURE_CLIENT_SECRET`: sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n
-   - `FATTURE_APP_ID`: 13354
+   - `FATTURE_CLIENT_ID`: [your_client_id]
+   - `FATTURE_CLIENT_SECRET`: [your_client_secret]
+   - `FATTURE_APP_ID`: [your_app_id]
 
 ### Opzione 2: Build Script
 Crea uno script che genera config.js durante il deploy usando le variabili d'ambiente.
@@ -41,7 +41,7 @@ Crea uno script che genera config.js durante il deploy usando le variabili d'amb
 **IMPORTANTE**: Se il token era già in uso:
 
 1. **Accedi a Fatture in Cloud**
-2. **API → Applicazioni → ID 13354**
+2. **API → Applicazioni → La tua applicazione**
 3. **Rigenera Client Secret**
 4. **Aggiorna la configurazione**
 

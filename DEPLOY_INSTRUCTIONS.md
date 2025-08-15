@@ -56,7 +56,7 @@ Dopo il deploy, Netlify ti darà un URL tipo: `https://nome-casuale.netlify.app`
 
 1. **Accedi a Fatture in Cloud**
 2. **Vai su API > Le tue applicazioni**
-3. **Modifica l'app ID 13354**
+3. **Modifica la tua applicazione**
 4. **Aggiungi Redirect URI**:
    ```
    https://il-tuo-url-netlify.netlify.app/auth-callback.html

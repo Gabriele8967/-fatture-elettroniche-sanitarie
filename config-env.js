@@ -9,11 +9,11 @@ function loadEnvConfig() {
     // In produzione, vengono caricate dal sistema Netlify
     
     const env = {
-        CLIENT_ID: process?.env?.FATTURE_CLIENT_ID || 'R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX',
-        CLIENT_SECRET: process?.env?.FATTURE_CLIENT_SECRET || 'sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n',
-        APP_ID: process?.env?.FATTURE_APP_ID || '13354',
-        ADMIN_EMAIL: process?.env?.FATTURE_ADMIN_EMAIL || 'centrimanna2@gmail.com',
-        REDIRECT_URI: process?.env?.FATTURE_REDIRECT_URI || 'https://fatture-elettroniche.netlify.app/auth-callback.html'
+        CLIENT_ID: process?.env?.FATTURE_CLIENT_ID || '',
+        CLIENT_SECRET: process?.env?.FATTURE_CLIENT_SECRET || '',
+        APP_ID: process?.env?.FATTURE_APP_ID || '',
+        ADMIN_EMAIL: process?.env?.FATTURE_ADMIN_EMAIL || '',
+        REDIRECT_URI: process?.env?.FATTURE_REDIRECT_URI || ''
     };
     
     return env;
@@ -28,14 +28,14 @@ const FATTURE_IN_CLOUD_CONFIG = {
     CLIENT_SECRET: envConfig.CLIENT_SECRET,
     APP_ID: envConfig.APP_ID,
     
-    // URL API
-    API_BASE_URL: 'https://api-v2.fattureincloud.it',
-    AUTH_URL: 'https://api-v2.fattureincloud.it/oauth/authorize',
-    TOKEN_URL: 'https://api-v2.fattureincloud.it/oauth/token',
+    // URL API (da environment variables)
+    API_BASE_URL: process?.env?.FATTURE_API_BASE_URL || '',
+    AUTH_URL: process?.env?.FATTURE_AUTH_URL || '',
+    TOKEN_URL: process?.env?.FATTURE_TOKEN_URL || '',
     
     // Configurazione
     REDIRECT_URI: envConfig.REDIRECT_URI,
-    SCOPES: 'entity.clients:r entity.clients:a issued_documents.invoices:r issued_documents.invoices:a',
+    SCOPES: process?.env?.FATTURE_SCOPES || '',
     ADMIN_EMAIL: envConfig.ADMIN_EMAIL
 };
 

@@ -10,13 +10,13 @@ const FATTURE_IN_CLOUD_CONFIG = {
     CLIENT_SECRET: '${process.env.FATTURE_CLIENT_SECRET || ''}',
     APP_ID: '${process.env.FATTURE_APP_ID || ''}',
     
-    API_BASE_URL: '${process.env.FATTURE_API_BASE_URL || 'https://api-v2.fattureincloud.it'}',
-    AUTH_URL: '${process.env.FATTURE_AUTH_URL || 'https://api-v2.fattureincloud.it/oauth/authorize'}',
-    TOKEN_URL: '${process.env.FATTURE_TOKEN_URL || 'https://api-v2.fattureincloud.it/oauth/token'}',
+    API_BASE_URL: '${process.env.FATTURE_API_BASE_URL || ''}',
+    AUTH_URL: '${process.env.FATTURE_AUTH_URL || ''}',
+    TOKEN_URL: '${process.env.FATTURE_TOKEN_URL || ''}',
     
-    REDIRECT_URI: '${process.env.FATTURE_REDIRECT_URI || 'https://fatture-elettroniche.netlify.app/auth-callback.html'}',
-    SCOPES: '${process.env.FATTURE_SCOPES || 'entity.clients:r entity.clients:a issued_documents.invoices:r issued_documents.invoices:a'}',
-    ADMIN_EMAIL: '${process.env.FATTURE_ADMIN_EMAIL || 'centrimanna2@gmail.com'}'
+    REDIRECT_URI: '${process.env.FATTURE_REDIRECT_URI || ''}',
+    SCOPES: '${process.env.FATTURE_SCOPES || ''}',
+    ADMIN_EMAIL: '${process.env.FATTURE_ADMIN_EMAIL || ''}'
 };
 
 function getAuthorizationUrl() {

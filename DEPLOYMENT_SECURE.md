@@ -12,9 +12,9 @@
 2. **Clicca "Add variable"** per ciascuna:
 
 ```
-FATTURE_CLIENT_ID = R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX
-FATTURE_CLIENT_SECRET = sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n  
-FATTURE_APP_ID = 13354
+FATTURE_CLIENT_ID = [your_client_id]
+FATTURE_CLIENT_SECRET = [your_client_secret]
+FATTURE_APP_ID = [your_app_id]
 ```
 
 ### **Step 3: Redeploy**
@@ -57,7 +57,7 @@ FATTURE_APP_ID = 13354
 3. Dovrebbe aprire popup Fatture in Cloud
 
 ### **Test Produzione**
-1. Vai su https://fatture-elettroniche.netlify.app/
+1. Vai sul tuo sito Netlify
 2. Clicca "Connetti API" 
 3. Autorizza applicazione
 4. Sistema pronto per fatture reali
@@ -67,15 +67,15 @@ FATTURE_APP_ID = 13354
 ### **Redirect URI Configurato**
 Assicurati che in Fatture in Cloud sia configurato:
 ```
-https://fatture-elettroniche.netlify.app/auth-callback.html
+https://your-site.netlify.app/auth-callback.html
 ```
 
 ### **Permissions Required**
 L'app deve avere i permessi:
-- `entity.clients:r` (lettura clienti)
-- `entity.clients:a` (scrittura clienti) 
-- `issued_documents.invoices:r` (lettura fatture)
-- `issued_documents.invoices:a` (scrittura fatture)
+- Lettura clienti
+- Scrittura clienti
+- Lettura fatture
+- Scrittura fatture
 
 ## 🎯 RISULTATO
 

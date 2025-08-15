@@ -5,9 +5,9 @@
 ### `.env` 
 Contiene le **credenziali REALI** per il tuo ambiente:
 ```bash
-FATTURE_CLIENT_ID=R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX
-FATTURE_CLIENT_SECRET=sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n
-FATTURE_APP_ID=13354
+FATTURE_CLIENT_ID=your_client_id_here
+FATTURE_CLIENT_SECRET=your_client_secret_here
+FATTURE_APP_ID=your_app_id_here
 ```
 
 ### `.env.example`
@@ -23,19 +23,19 @@ Template pubblico per altri sviluppatori (senza credenziali reali)
 
 ```
 Nome: FATTURE_CLIENT_ID
-Valore: R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX
+Valore: [inserire il tuo Client ID]
 
 Nome: FATTURE_CLIENT_SECRET  
-Valore: sc7apon7UwMj89wg6eL9PqaUgqcpTEnBSFSAwLqpVGvBLgc0Q4GHM6D2gAV12V8n
+Valore: [inserire il tuo Client Secret]
 
 Nome: FATTURE_APP_ID
-Valore: 13354
+Valore: [inserire il tuo App ID]
 
 Nome: FATTURE_ADMIN_EMAIL
-Valore: centrimanna2@gmail.com
+Valore: [inserire la tua email admin]
 
 Nome: FATTURE_REDIRECT_URI
-Valore: https://fatture-elettroniche.netlify.app/auth-callback.html
+Valore: [inserire il tuo redirect URI]
 ```
 
 ### **Trigger Redeploy**
@@ -48,7 +48,7 @@ Dopo aver aggiunto le variabili:
 ```javascript
 // File config.js con credenziali hardcoded
 const FATTURE_IN_CLOUD_CONFIG = {
-    CLIENT_ID: 'R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX',
+    CLIENT_ID: 'your_client_id_here',
     // ...
 };
 ```

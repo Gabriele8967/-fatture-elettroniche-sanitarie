@@ -537,7 +537,7 @@ class InvoiceFormManager {
             const invoice = await this.fattureService.generateInvoice(formData);
             await this.fattureService.sendInvoiceByEmail(invoice.id, formData);
 
-            this.showAlert('success', '✅ Fattura generata e inviata con successo! Una copia è stata inviata anche a centrimanna2@gmail.com');
+            this.showAlert('success', '✅ Fattura generata e inviata con successo! Una copia è stata inviata anche all\'amministratore');
             this.resetForm();
 
         } catch (error) {

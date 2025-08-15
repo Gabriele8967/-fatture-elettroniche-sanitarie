@@ -3,6 +3,7 @@
   command = "node build-production.js || echo 'Fallback build completed'"
   functions = "netlify/functions"
 
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

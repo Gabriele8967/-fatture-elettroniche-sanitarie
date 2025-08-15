@@ -11,7 +11,7 @@ L'errore "Stato OAuth2 non valido" indica che il **Redirect URI** non è configu
 3. Vai su **Impostazioni → API → Le tue applicazioni**
 
 ### **Step 2: Modifica l'Applicazione**
-1. Trova l'applicazione con **ID 13354**
+1. Trova la tua applicazione
 2. Clicca su **"Modifica"** o **"Configura"**
 3. Cerca la sezione **"Redirect URI"** o **"URL di reindirizzamento"**
 
