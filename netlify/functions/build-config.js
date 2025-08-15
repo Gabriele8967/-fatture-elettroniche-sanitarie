@@ -37,25 +37,58 @@ function generateRandomState() {
 function saveState(state) {
     sessionStorage.setItem('oauth_state', state);
     localStorage.setItem('oauth_state_backup', state);
-    document.cookie = \`oauth_state=\${state}; path=/; max-age=300\`;
+    // Cookie con domain principale per condivisione tra finestre
+    document.cookie = \`oauth_state=\${state}; path=/; max-age=300; SameSite=Lax\`;
+    // Salva anche in una chiave globale per debug
+    window.oauth_state_debug = state;
+    console.log('State salvato:', state);
 }
 
 function verifyState(state) {
+    console.log('Verifica state ricevuto:', state);
+    
+    // Prova tutti i meccanismi di storage
     let savedState = sessionStorage.getItem('oauth_state');
-    if (!savedState) savedState = localStorage.getItem('oauth_state_backup');
+    console.log('SessionStorage:', savedState);
+    
+    if (!savedState) {
+        savedState = localStorage.getItem('oauth_state_backup');
+        console.log('LocalStorage:', savedState);
+    }
+    
     if (!savedState) {
         const cookies = document.cookie.split(';');
         for (let cookie of cookies) {
             const [name, value] = cookie.trim().split('=');
             if (name === 'oauth_state') {
                 savedState = value;
+                console.log('Cookie:', savedState);
                 break;
             }
         }
     }
-    sessionStorage.removeItem('oauth_state');
-    localStorage.removeItem('oauth_state_backup');
-    document.cookie = 'oauth_state=; path=/; max-age=0';
+    
+    if (!savedState && window.opener && window.opener.oauth_state_debug) {
+        savedState = window.opener.oauth_state_debug;
+        console.log('Window opener:', savedState);
+    }
+    
+    if (!savedState && window.parent && window.parent.oauth_state_debug) {
+        savedState = window.parent.oauth_state_debug;
+        console.log('Window parent:', savedState);
+    }
+    
+    console.log('State confronto:', { ricevuto: state, salvato: savedState, match: savedState === state });
+    
+    // Pulisci solo se il confronto ha successo
+    if (savedState === state) {
+        sessionStorage.removeItem('oauth_state');
+        localStorage.removeItem('oauth_state_backup');
+        document.cookie = 'oauth_state=; path=/; max-age=0';
+        if (window.opener) delete window.opener.oauth_state_debug;
+        if (window.parent) delete window.parent.oauth_state_debug;
+    }
+    
     return savedState === state;
 }`;
 

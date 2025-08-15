@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test OAuth2 Semplificato</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 2rem; 
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .debug {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #16a34a; font-weight: bold; }
+        .error { color: #dc2626; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Test OAuth2 Semplificato</h1>
+        <p>Test rapido senza verifica state per debugging</p>
+        
+        <button class="btn" onclick="testOAuth()">🔑 Test OAuth2 (No State Check)</button>
+        <button class="btn" onclick="clearAll()">🗑️ Pulisci Tutto</button>
+        <button class="btn" onclick="checkTokens()">👁️ Verifica Token Salvati</button>
+        
+        <div id="debug" class="debug">Clicca su "Test OAuth2" per iniziare...</div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const debugDiv = document.getElementById('debug');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'success' ? 'success' : type === 'error' ? 'error' : '';
+            debugDiv.innerHTML += `<span class="${className}">${timestamp}: ${message}</span>\n`;
+            debugDiv.scrollTop = debugDiv.scrollHeight;
+            console.log(message);
+        }
+
+        async function testOAuth() {
+            log('🚀 Avvio test OAuth2 semplificato...');
+            
+            try {
+                // Usa configurazione hardcoded per test rapido
+                const config = {
+                    CLIENT_ID: 'R3eiTNDpkjm9nqimrVF8GfWrpuUSp5dX',
+                    AUTH_URL: 'https://api-v2.fattureincloud.it/oauth/authorize',
+                    SCOPES: 'entity.clients:r entity.clients:a issued_documents.invoices:r issued_documents.invoices:a',
+                    REDIRECT_URI: window.location.origin + '/auth-callback-simple.html'
+                };
+                
+                log('Config test: ' + JSON.stringify(config, null, 2));
+                
+                const state = 'test_state_' + Math.random().toString(36).substring(2, 15);
+                log('State generato: ' + state);
+                
+                // Salva state in tutti i modi possibili
+                localStorage.setItem('oauth_test_state', state);
+                sessionStorage.setItem('oauth_test_state', state);
+                document.cookie = `oauth_test_state=${state}; path=/; max-age=600`;
+                window.oauth_test_state = state;
+                
+                log('State salvato in: localStorage, sessionStorage, cookie, window');
+                
+                const params = new URLSearchParams({
+                    response_type: 'code',
+                    client_id: config.CLIENT_ID,
+                    redirect_uri: config.REDIRECT_URI,
+                    scope: config.SCOPES,
+                    state: state
+                });
+                
+                const authUrl = `${config.AUTH_URL}?${params.toString()}`;
+                log('URL autorizzazione: ' + authUrl);
+                
+                const popup = window.open(authUrl, 'oauth_test', 'width=600,height=700,scrollbars=yes,resizable=yes');
+                
+                if (!popup) {
+                    log('❌ Popup bloccato dal browser!', 'error');
+                    return;
+                }
+                
+                log('✅ Popup aperto, attendo risposta...');
+                
+                // Listener per messaggi dal popup
+                const messageHandler = (event) => {
+                    if (event.data.type === 'auth_success') {
+                        log('✅ Autorizzazione riuscita!', 'success');
+                        log('Token ricevuto: ' + event.data.access_token.substring(0, 30) + '...');
+                        window.removeEventListener('message', messageHandler);
+                        popup.close();
+                    }
+                };
+                
+                window.addEventListener('message', messageHandler);
+                
+                // Check se popup viene chiuso manualmente
+                const checkClosed = setInterval(() => {
+                    if (popup.closed) {
+                        clearInterval(checkClosed);
+                        window.removeEventListener('message', messageHandler);
+                        log('⚠️ Popup chiuso manualmente', 'error');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                log('❌ Errore test OAuth2: ' + error.message, 'error');
+            }
+        }
+
+        function clearAll() {
+            localStorage.clear();
+            sessionStorage.clear();
+            document.cookie = 'oauth_test_state=; path=/; max-age=0';
+            document.cookie = 'oauth_state=; path=/; max-age=0';
+            delete window.oauth_test_state;
+            delete window.oauth_state_debug;
+            log('🗑️ Tutti i dati cancellati');
+        }
+
+        function checkTokens() {
+            const tokens = {
+                'fatture_access_token': localStorage.getItem('fatture_access_token'),
+                'fatture_token_expires': localStorage.getItem('fatture_token_expires'),
+                'oauth_test_state': localStorage.getItem('oauth_test_state'),
+                'oauth_state_backup': localStorage.getItem('oauth_state_backup')
+            };
+            
+            log('🔍 Token salvati:');
+            for (const [key, value] of Object.entries(tokens)) {
+                if (value) {
+                    log(`  ${key}: ${value.substring(0, 50)}${value.length > 50 ? '...' : ''}`);
+                } else {
+                    log(`  ${key}: non presente`);
+                }
+            }
+        }
+
+        // Auto-check al caricamento
+        window.addEventListener('load', () => {
+            log('📄 Pagina di test caricata');
+            checkTokens();
+        });
+    </script>
+</body>
+</html>
