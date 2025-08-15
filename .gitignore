@@ -46,6 +46,9 @@ node_modules/
 config.js
 .env
 
+# Test files with sensitive data
+oauth-test-simple.html
+
 # IDE files
 .vscode/
 .idea/

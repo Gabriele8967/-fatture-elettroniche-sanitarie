@@ -42,7 +42,8 @@ exports.handler = async (event, context) => {
         }
 
         // Exchange code for token with FattureInCloud API
-        const tokenResponse = await fetch('https://api-v2.fattureincloud.it/oauth/token', {
+        const tokenUrl = process.env.FATTURE_TOKEN_URL || 'https://api-v2.fattureincloud.it/oauth/token';
+        const tokenResponse = await fetch(tokenUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

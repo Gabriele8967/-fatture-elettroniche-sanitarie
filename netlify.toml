@@ -15,6 +15,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  SECRETS_SCAN_OMIT_PATHS = "fattureincloud-js-sdk-master/**,oauth-test-simple.html"
 
 # Headers per sicurezza
 [[headers]]
