@@ -1,0 +1,5 @@
+# Redirect per config.js generato dinamicamente
+/config.js /.netlify/functions/build-config 200
+
+# SPA redirects
+/* /index.html 200
