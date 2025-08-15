@@ -1,0 +1,4 @@
+# File da escludere dal deploy Netlify
+config.js
+.env
+build-production.js
