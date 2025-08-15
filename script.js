@@ -215,9 +215,6 @@ class FattureInCloudService {
                     type: 'standard'
                 }
             }],
-            template: {
-                id: 1
-            },
             delivery_note: false,
             accompanying_invoice: false,
             notes: formData.invoiceNotes || '',
