@@ -44,6 +44,7 @@ node_modules/
 
 # Configuration with sensitive data
 config.js
+.env
 
 # IDE files
 .vscode/
