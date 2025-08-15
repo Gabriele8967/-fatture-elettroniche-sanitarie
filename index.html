@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Fatture Elettroniche - Servizi Sanitari</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Generatore Fatture Elettroniche</h1>
+            <p class="subtitle">Servizi Sanitari - Sistema di Fatturazione Automatizzato</p>
+        </header>
+
+        <main class="main-content">
+            <form id="invoiceForm" class="invoice-form">
+                <!-- Sezione Dati Paziente -->
+                <section class="form-section">
+                    <h2>📋 Dati Paziente</h2>
+                    <div class="form-group">
+                        <label for="patientName">Nome e Cognome *</label>
+                        <input type="text" id="patientName" name="patientName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patientEmail">Email *</label>
+                        <input type="email" id="patientEmail" name="patientEmail" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientCF">Codice Fiscale *</label>
+                            <input type="text" id="patientCF" name="patientCF" pattern="[A-Z0-9]{16}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientPhone">Telefono</label>
+                            <input type="tel" id="patientPhone" name="patientPhone">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Indirizzo Paziente -->
+                <section class="form-section">
+                    <h2>🏠 Indirizzo di Fatturazione</h2>
+                    <div class="form-group">
+                        <label for="patientAddress">Via/Piazza *</label>
+                        <input type="text" id="patientAddress" name="patientAddress" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patientCity">Città *</label>
+                            <input type="text" id="patientCity" name="patientCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientCAP">CAP *</label>
+                            <input type="text" id="patientCAP" name="patientCAP" pattern="[0-9]{5}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientProvince">Provincia *</label>
+                            <input type="text" id="patientProvince" name="patientProvince" maxlength="2" required>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Servizi Sanitari -->
+                <section class="form-section">
+                    <h2>🩺 Servizi Sanitari Erogati</h2>
+                    <div id="servicesContainer">
+                        <div class="service-item">
+                            <div class="form-group">
+                                <label for="serviceDescription1">Descrizione Servizio *</label>
+                                <input type="text" id="serviceDescription1" name="serviceDescription1" placeholder="es. Visita specialistica cardiologica" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="serviceQuantity1">Quantità</label>
+                                    <input type="number" id="serviceQuantity1" name="serviceQuantity1" value="1" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="servicePrice1">Prezzo Unitario (€) *</label>
+                                    <input type="number" id="servicePrice1" name="servicePrice1" step="0.01" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="serviceIVA1">IVA (%)</label>
+                                    <select id="serviceIVA1" name="serviceIVA1" required>
+                                        <option value="0">Esente IVA (Art. 10)</option>
+                                        <option value="4">4%</option>
+                                        <option value="10">10%</option>
+                                        <option value="22">22%</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="addServiceBtn" class="add-service-btn">+ Aggiungi Altro Servizio</button>
+                </section>
+
+                <!-- Sezione Totale -->
+                <section class="form-section total-section">
+                    <h2>💰 Riepilogo Importi</h2>
+                    <div class="total-display">
+                        <div class="total-row">
+                            <span>Imponibile:</span>
+                            <span id="totalImponibile">€ 0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>IVA:</span>
+                            <span id="totalIVA">€ 0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Totale:</span>
+                            <span id="totalFattura">€ 0.00</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione Note -->
+                <section class="form-section">
+                    <h2>📝 Note Aggiuntive</h2>
+                    <div class="form-group">
+                        <label for="invoiceNotes">Note (opzionale)</label>
+                        <textarea id="invoiceNotes" name="invoiceNotes" rows="3" placeholder="Eventuali note o riferimenti per la fattura..."></textarea>
+                    </div>
+                </section>
+
+                <!-- Pulsanti Azione -->
+                <section class="form-actions">
+                    <button type="button" id="previewBtn" class="btn btn-secondary">👁️ Anteprima Fattura</button>
+                    <button type="submit" id="generateBtn" class="btn btn-primary">🧾 Genera e Invia Fattura</button>
+                </section>
+
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Generazione fattura in corso...</p>
+                </div>
+            </form>
+
+            <!-- Modal Anteprima -->
+            <div id="previewModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Anteprima Fattura Elettronica</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body" id="previewContent">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closePreview">Chiudi</button>
+                        <button type="button" class="btn btn-primary" id="confirmGenerate">Conferma e Genera</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Sistema Fatturazione Elettronica Sanitaria</p>
+            <p>Powered by Fatture in Cloud API</p>
+        </footer>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
