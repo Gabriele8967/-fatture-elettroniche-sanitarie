@@ -97,7 +97,23 @@ class FattureInCloudService {
             }
             
             const data = await response.json();
-            this.companyId = data.data.default_company.id;
+            console.log('API Response received:', JSON.stringify(data, null, 2));
+            
+            // Gestisce diverse strutture di risposta
+            let companyId;
+            if (data.data && data.data.default_company && data.data.default_company.id) {
+                companyId = data.data.default_company.id;
+            } else if (data.data && data.data.companies && data.data.companies.length > 0) {
+                companyId = data.data.companies[0].id;
+            } else if (data.default_company && data.default_company.id) {
+                companyId = data.default_company.id;
+            } else if (data.companies && data.companies.length > 0) {
+                companyId = data.companies[0].id;
+            } else {
+                throw new Error(`Struttura risposta API non riconosciuta: ${JSON.stringify(data)}`);
+            }
+            
+            this.companyId = companyId;
             return this.companyId;
         } catch (error) {
             console.error('Errore ottenimento Company ID:', error);

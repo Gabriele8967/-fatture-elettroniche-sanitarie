@@ -56,6 +56,10 @@ exports.handler = async (event, context) => {
         
         const response = await fetch(url, fetchOptions);
         const responseData = await response.json();
+        
+        // Log the response for debugging
+        console.log(`API Response Status: ${response.status}`);
+        console.log(`API Response Data:`, JSON.stringify(responseData, null, 2));
 
         return {
             statusCode: response.status,
