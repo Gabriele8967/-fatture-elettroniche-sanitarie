@@ -1,8 +1,14 @@
-// Netlify Function - Genera config.js da environment variables
-exports.handler = async (event, context) => {
-    // Legge le variabili d'ambiente di Netlify
-    const configContent = `// ========================================
-// CONFIGURAZIONE API FATTURE IN CLOUD - DA ENV
+// ========================================
+// BUILD SCRIPT PER PRODUZIONE
+// Genera config.js per deploy Netlify
+// ========================================
+
+const fs = require('fs');
+
+// Template di configurazione con variabili d'ambiente
+const configTemplate = `// ========================================
+// CONFIGURAZIONE API FATTURE IN CLOUD - PRODUZIONE
+// Auto-generato da environment variables
 // ========================================
 
 const FATTURE_IN_CLOUD_CONFIG = {
@@ -56,15 +62,26 @@ function verifyState(state) {
     sessionStorage.removeItem('oauth_state');
     localStorage.removeItem('oauth_state_backup');
     document.cookie = 'oauth_state=; path=/; max-age=0';
+    console.log('State verification:', { received: state, saved: savedState });
     return savedState === state;
 }`;
 
-    return {
-        statusCode: 200,
-        headers: {
-            'Content-Type': 'application/javascript',
-            'Cache-Control': 'no-cache'
-        },
-        body: configContent
-    };
-};
+// Verifica che le environment variables siano configurate
+const requiredVars = ['FATTURE_CLIENT_ID', 'FATTURE_CLIENT_SECRET', 'FATTURE_APP_ID'];
+const missingVars = requiredVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+    console.error('❌ Environment variables mancanti:', missingVars.join(', '));
+    console.error('🔧 Configura le variabili su Netlify Dashboard → Environment Variables');
+    process.exit(1);
+}
+
+// Scrive il file config.js
+try {
+    fs.writeFileSync('config.js', configTemplate);
+    console.log('✅ config.js generato per produzione con environment variables');
+    console.log('🔧 CLIENT_ID configurato:', process.env.FATTURE_CLIENT_ID ? 'SÌ' : 'NO');
+} catch (error) {
+    console.error('❌ Errore generazione config.js:', error);
+    process.exit(1);
+}

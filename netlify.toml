@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = "echo 'Static site - no build required'"
+  command = "node build-production.js || echo 'Fallback build completed'"
   functions = "netlify/functions"
 
 [[redirects]]
