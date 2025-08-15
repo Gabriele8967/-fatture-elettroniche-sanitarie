@@ -75,16 +75,21 @@ class FattureInCloudService {
         });
     }
 
-    // Ottiene l'ID dell'azienda
+    // Ottiene l'ID dell'azienda tramite proxy API
     async getCompanyId() {
         if (this.companyId) return this.companyId;
         
         try {
-            const response = await fetch(`${this.apiBaseUrl}/user/info`, {
+            const response = await fetch('/.netlify/functions/api-proxy', {
+                method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${this.accessToken}`,
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    path: '/user/info',
+                    method: 'GET',
+                    token: this.accessToken
+                })
             });
             
             if (!response.ok) {
@@ -114,13 +119,17 @@ class FattureInCloudService {
         const invoice = this.prepareInvoiceData(invoiceData);
 
         try {
-            const response = await fetch(`${this.apiBaseUrl}/c/${this.companyId}/issued_documents`, {
+            const response = await fetch('/.netlify/functions/api-proxy', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${this.accessToken}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ data: invoice })
+                body: JSON.stringify({
+                    path: `/c/${this.companyId}/issued_documents`,
+                    method: 'POST',
+                    token: this.accessToken,
+                    body: { data: invoice }
+                })
             });
 
             if (!response.ok) {
