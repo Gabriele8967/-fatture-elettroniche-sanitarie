@@ -225,7 +225,9 @@ class FattureInCloudService {
             other_withholding_tax: 0,
             stamp_duty: 0,
             use_split_payment: false,
-            e_invoice: false
+            e_invoice: false,
+            // CACHE BUSTER v2 - template field removed
+            _cache_buster: Date.now()
         };
     }
 
